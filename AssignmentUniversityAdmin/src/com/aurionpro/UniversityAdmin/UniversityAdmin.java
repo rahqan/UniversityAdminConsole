@@ -11,6 +11,8 @@ public class UniversityAdmin {
 		
 		System.out.println("kuch to push ho yarr");
 		
+		System.out.println("final print");
+		
 	}
 
 }
