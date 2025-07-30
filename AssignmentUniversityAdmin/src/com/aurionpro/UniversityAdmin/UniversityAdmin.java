@@ -8,7 +8,9 @@ public class UniversityAdmin {
 		System.out.println("HEllo world!");
 		
 		System.out.println("Hehehehehehe");
-
+		
+		System.out.println("kuch to push ho yarr");
+		
 	}
 
 }
