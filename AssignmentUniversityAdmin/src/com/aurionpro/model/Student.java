@@ -1,5 +1,70 @@
 package com.aurionpro.model;
 
-public class Student {
+import java.util.List;
 
+public class Student {
+    private int studentId;
+    private String name;
+    private String rollNumber;  // changed from int to String
+    private int age;
+    private double percentage;
+    private List<Course> courses;
+
+    // Constructor
+    public Student( String name, String rollNumber,   List<Course> courses) {
+    
+        this.name = name;
+        this.rollNumber = rollNumber;
+      
+       
+        this.courses = courses;
+    }
+
+    // Getters and Setters
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+
+ 
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+               "studentId=" + studentId +
+               ", name='" + name + '\'' +
+               ", rollNumber='" + rollNumber + '\'' +
+               ", age=" + age +
+             
+               ", courses=" + courses +
+               '}';
+    }
 }
