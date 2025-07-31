@@ -16,6 +16,17 @@ public class UniversityAdmin {
 		
 		System.out.println("final check for github");
 		
+System.out.println("HEllo world!");
+		
+		System.out.println("Hehehehehehe");
+		
+		System.out.println("kuch to push ho yarr");
+		
+		System.out.println("final print");
+		System.out.println("hello again");
+		
+		System.out.println("final check for github");
+		
 	}
 
 }
