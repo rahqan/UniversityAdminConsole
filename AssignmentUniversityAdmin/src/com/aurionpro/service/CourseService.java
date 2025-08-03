@@ -7,15 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CourseService {
-	private final CourseDAO courseDAO;
-
-	public CourseService() throws SQLException {
-		courseDAO = new CourseDAO();
-	}
+	private final CourseDAO courseDAO = new CourseDAO();
 
 	public void addCourse(String name) throws SQLException {
-		Course course = new Course(name);
-		courseDAO.addCourse(course);
+		courseDAO.addCourse(new Course(0, name)); // ID auto-generated
 	}
 
 	public List<Course> getAllCourses() throws SQLException {
@@ -26,7 +21,19 @@ public class CourseService {
 		courseDAO.addSubjectToCourse(courseId, subjectId);
 	}
 
-	public boolean deleteCourse(int courseId) throws SQLException {
-		return courseDAO.softDeleteCourse(courseId);
+	public List<Student> getCourseStudents(int courseId) throws SQLException {
+		return courseDAO.getCourseStudents(courseId);
+	}
+
+	public void deleteCourseIfEmpty(int courseId) throws SQLException {
+		courseDAO.deleteCourseIfEmpty(courseId);
+	}
+
+	public Course getCourseById(int courseId) throws SQLException {
+		return courseDAO.getCourseById(courseId);
+	}
+
+	public List<Course> getCoursesByStudentId(int studentId) throws SQLException {
+		return courseDAO.getCoursesByStudentId(studentId);
 	}
 }

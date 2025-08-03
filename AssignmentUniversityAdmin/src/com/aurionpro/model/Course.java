@@ -3,35 +3,19 @@ package com.aurionpro.model;
 import java.util.List;
 
 public class Course {
-	private int id;
+	private int courseId;
 	private String name;
 
-	public Course() {
-	}
-
-	public Course(int id, String name) {
-		this.id = id;
+	public Course(int courseId, String name) {
+		this.courseId = courseId;
 		this.name = name;
 	}
 
-	public int getId() {
-		return id;
+	public int getCourseId() {
+		return courseId;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return "Course [id=" + id + ", name=" + name + "]";
 	}
 }
