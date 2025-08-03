@@ -1,72 +1,131 @@
 package com.aurionpro.controller;
 
-import model.Course;
-import model.Database;
+import com.aurionpro.model.Course;
+import com.aurionpro.model.Student;
+import com.aurionpro.service.CourseService;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Scanner;
 
-public class CourseDAO {
+public class CourseController {
 
-	private final Connection conn;
+    private final CourseService courseService;
+    private final Scanner scanner;
 
-	public CourseDAO() throws SQLException {
-		conn = Database.getInstance().getConnection();
-	}
+    public CourseController() {
+        courseService = new CourseService();
+        scanner = new Scanner(System.in);
+    }
 
-	public void addCourse(Course course) throws SQLException {
-		String sql = "INSERT INTO course(name, isActive) VALUES (?, true)";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, course.getName());
-		stmt.executeUpdate();
-	}
+    public void courseMenu() {
+        while (true) {
+            System.out.println("\n--- Course Menu ---");
+            System.out.println("1. Add Course");
+            System.out.println("2. View All Courses");
+            System.out.println("3. Add Subject to Course");
+            System.out.println("4. View Students of a Course");
+            System.out.println("5. Delete Course if Empty");
+            System.out.println("6. Get Course by ID");
+            System.out.println("7. Get Courses by Student ID");
+            System.out.println("0. Back");
+            System.out.print("Choose: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-	public List<Course> getAllCourses() throws SQLException {
-		List<Course> courses = new ArrayList<>();
-		String sql = "SELECT * FROM course WHERE isActive = true";
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
+            try {
+                switch (choice) {
+                    case 1 -> addCourse();
+                    case 2 -> getAllCourses();
+                    case 3 -> addSubjectToCourse();
+                    case 4 -> getCourseStudents();
+                    case 5 -> deleteCourseIfEmpty();
+                    case 6 -> getCourseById();
+                    case 7 -> getCoursesByStudentId();
+                    case 0 -> {
+                        return;
+                    }
+                    default -> System.out.println("Invalid choice!");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
 
-		while (rs.next()) {
-			Course c = new Course(rs.getInt("course_id"), rs.getString("name"));
-			courses.add(c);
-		}
+    private void addCourse() throws SQLException {
+        System.out.print("Enter course name: ");
+        String name = scanner.nextLine();
+        courseService.addCourse(name);
+        System.out.println("Course added successfully.");
+    }
 
-		return courses;
-	}
+    private void getAllCourses() throws SQLException {
+        List<Course> courses = courseService.getAllCourses();
+        if (courses.isEmpty()) {
+            System.out.println("No courses found.");
+            return;
+        }
+        for (Course course : courses) {
+            System.out.println(course.getCourseId() + ": " + course.getName());
+        }
+    }
 
-	public void addSubjectToCourse(int courseId, int subjectId) throws SQLException {
-		String sql = "INSERT INTO course_subject(course_id, subject_id, isActive) VALUES (?, ?, true) "
-				+ "ON CONFLICT (course_id, subject_id) DO NOTHING";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, courseId);
-		stmt.setInt(2, subjectId);
-		stmt.executeUpdate();
-	}
+    private void addSubjectToCourse() throws SQLException {
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        System.out.print("Enter subject ID: ");
+        int subjectId = scanner.nextInt();
+        scanner.nextLine();
+        courseService.addSubjectToCourse(courseId, subjectId);
+        System.out.println("Subject added to course.");
+    }
 
-	public List<Integer> getStudentIdsForCourse(int courseId) throws SQLException {
-		List<Integer> studentIds = new ArrayList<>();
-		String sql = "SELECT student_id FROM student_course WHERE course_id = ? AND isActive = true";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, courseId);
-		ResultSet rs = stmt.executeQuery();
+    private void getCourseStudents() throws SQLException {
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        scanner.nextLine();
+        List<Student> students = courseService.getCourseStudents(courseId);
+        if (students.isEmpty()) {
+            System.out.println("No students enrolled in this course.");
+            return;
+        }
+        for (Student s : students) {
+            System.out.println(s.getStudentId() + ": " + s.getName());
+        }
+    }
 
-		while (rs.next()) {
-			studentIds.add(rs.getInt("student_id"));
-		}
+    private void deleteCourseIfEmpty() throws SQLException {
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        scanner.nextLine();
+        courseService.deleteCourseIfEmpty(courseId);
+        System.out.println("Checked and deleted if course is empty.");
+    }
 
-		return studentIds;
-	}
+    private void getCourseById() throws SQLException {
+        System.out.print("Enter course ID: ");
+        int courseId = scanner.nextInt();
+        scanner.nextLine();
+        Course c = courseService.getCourseById(courseId);
+        if (c == null) {
+            System.out.println("Course not found.");
+        } else {
+            System.out.println("ID: " + c.getCourseId() + ", Name: " + c.getName());
+        }
+    }
 
-	public boolean softDeleteCourse(int courseId) throws SQLException {
-		List<Integer> students = getStudentIdsForCourse(courseId);
-		if (students.isEmpty()) {
-			String sql = "UPDATE course SET isActive = false WHERE course_id = ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, courseId);
-			return stmt.executeUpdate() > 0;
-		}
-		return false;
-	}
+    private void getCoursesByStudentId() throws SQLException {
+        System.out.print("Enter student ID: ");
+        int studentId = scanner.nextInt();
+        scanner.nextLine();
+        List<Course> courses = courseService.getCoursesByStudentId(studentId);
+        if (courses.isEmpty()) {
+            System.out.println("No courses found for this student.");
+            return;
+        }
+        for (Course c : courses) {
+            System.out.println("ID: " + c.getCourseId() + ", Name: " + c.getName());
+        }
+    }
 }
