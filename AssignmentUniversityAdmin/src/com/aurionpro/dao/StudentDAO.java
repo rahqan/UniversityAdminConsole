@@ -1,147 +1,143 @@
 package com.aurionpro.dao;
 
-
 public class StudentDAO {
 
-    private final Connection connection;
+	private final Connection connection;
 
-    public StudentDAO() {
-        this.connection = Database.getInstance().getConnection();
-    }
+	public StudentDAO() {
+		this.connection = Database.getInstance().getConnection();
+	}
 
-    public void addStudent(Student student) throws SQLException {
-        String sql = "INSERT INTO student (name, roll_number) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, student.getName());
-            statement.setString(2, String.valueOf(student.getRollNumber()));
-            statement.executeUpdate();
+	public void addStudent(Student student) throws SQLException {
+		String sql = "INSERT INTO student (name, roll_number) VALUES (?, ?)";
+		try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			statement.setString(1, student.getName());
+			statement.setString(2, String.valueOf(student.getRollNumber()));
+			statement.executeUpdate();
 
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    student.setStudentId(resultSet.getInt(1));
-                }
-            }
-        }
-    }
+			try (ResultSet resultSet = statement.getGeneratedKeys()) {
+				if (resultSet.next()) {
+					student.setStudentId(resultSet.getInt(1));
+				}
+			}
+		}
+	}
 
-    public List<Student> getAllStudents() throws SQLException {
-        List<Student> students = new ArrayList<>();
-        String sql = "SELECT * FROM student WHERE isActive = TRUE";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                Student student = new Student(
-                    resultSet.getInt("student_id"),
-                    resultSet.getString("name"),
-                    Integer.parseInt(resultSet.getString("roll_number")),
-                    0,
-                    0.0,
-                    new ArrayList<>()
-                );
-                students.add(student);
-            }
-        }
+	public List<Student> getAllStudents() throws SQLException {
+		List<Student> students = new ArrayList<>();
+		String sql = "SELECT * FROM student WHERE isActive = TRUE";
 
-        return students;
-    }
+		try (PreparedStatement statement = connection.prepareStatement(sql);
+				ResultSet resultSet = statement.executeQuery()) {
 
-    public Student getStudentById(int id) throws SQLException {
-        String sql = "SELECT * FROM student WHERE student_id = ? AND isActive = TRUE";
+			while (resultSet.next()) {
+				Student student = new Student(resultSet.getInt("student_id"), resultSet.getString("name"),
+						Integer.parseInt(resultSet.getString("roll_number")), 0, 0.0, new ArrayList<>());
+				students.add(student);
+			}
+		}
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+		return students;
+	}
 
-            if (resultSet.next()) {
-                return new Student(
-                    resultSet.getInt("student_id"),
-                    resultSet.getString("name"),
-                    Integer.parseInt(resultSet.getString("roll_number")),
-                    0,
-                    0.0,
-                    new ArrayList<>()
-                );
-            }
-        }
+	public Student getStudentById(int id) throws SQLException {
+		String sql = "SELECT * FROM student WHERE student_id = ? AND isActive = TRUE";
 
-        return null;
-    }
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
 
-    public void deleteStudent(int id) throws SQLException {
-        String sql = "UPDATE student SET isActive = FALSE WHERE student_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        }
-    }
+			if (resultSet.next()) {
+				return new Student(resultSet.getInt("student_id"), resultSet.getString("name"),
+						Integer.parseInt(resultSet.getString("roll_number")));
+			}
+		}
 
-    public void assignCourse(int studentId, int courseId) throws SQLException {
-        String sql = "INSERT INTO student_course (student_id, course_id) VALUES (?, ?) " +
-                     "ON DUPLICATE KEY UPDATE isActive = TRUE";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, studentId);
-            statement.setInt(2, courseId);
-            statement.executeUpdate();
-        }
-    }
+		return null;
+	}
+	
 
-    public void createStudentProfile(StudentProfile profile) throws SQLException {
-        String sql = "INSERT INTO student_profile (student_id, address, phone, dob) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, profile.getStudentId());
 
-            // Defensive defaults
-            statement.setString(2, profile.getAddress() != null ? profile.getAddress() : "");
-            statement.setString(3, profile.getPhone() != null ? profile.getPhone() : "");
-            statement.setDate(4, profile.getDob() != null ? Date.valueOf(profile.getDob()) : Date.valueOf("1970-01-01"));
+	public void deleteStudent(int id) throws SQLException {
+		String sql = "UPDATE student SET isActive = FALSE WHERE student_id = ?";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		}
+	}
 
-            statement.executeUpdate();
+	public void assignCourse(int studentId, int courseId) throws SQLException {
+		String sql = "INSERT INTO student_course (student_id, course_id) VALUES (?, ?) "
+				+ "ON DUPLICATE KEY UPDATE isActive = TRUE";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, studentId);
+			statement.setInt(2, courseId);
+			statement.executeUpdate();
+		}
+	}
 
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    profile.setProfileId(resultSet.getInt(1));
-                }
-            }
-        }
-    }
+	public Student getStudentByRollNumber(String rollNumber) throws SQLException {
+		String sql = "SELECT * FROM student WHERE roll_number = ? AND isActive = TRUE";
 
-    public Student getStudentByRollNumber(String rollNumber) throws SQLException {
-        String sql = "SELECT * FROM student WHERE roll_number = ? AND isActive = TRUE";
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setString(1, rollNumber);
+			ResultSet resultSet = statement.executeQuery();
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, rollNumber);
-            ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				return new Student(resultSet.getInt("student_id"), resultSet.getString("name"),
+						Integer.parseInt(resultSet.getString("roll_number")), // Convert back if needed
+						0, 0.0, new ArrayList<>());
+			}
+		}
 
-            if (resultSet.next()) {
-                return new Student(
-                    resultSet.getInt("student_id"),
-                    resultSet.getString("name"),
-                    Integer.parseInt(resultSet.getString("roll_number")), // Convert back if needed
-                    0,
-                    0.0,
-                    new ArrayList<>()
-                );
-            }
-        }
+		return null;
+	}
+	
+	public StudentProfile getStudentProfile(int studentId) throws SQLException {
+	    String sql = "SELECT * FROM student_profile WHERE student_id = ?";
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setInt(1, studentId);
+	        ResultSet rs = stmt.executeQuery();
 
-        return null;
-    }
-    
-    public void createProfile(StudentProfile profile) throws SQLException {
-        String sql = "INSERT INTO student_profile (student_id, address, phone, dob) VALUES (?, ?, ?, ?)";
+	        if (rs.next()) {
+	            return new StudentProfile(
+	                studentId,
+	                rs.getString("address"),
+	                rs.getString("phone"),
+	                rs.getDate("dob")
+	            );
+	        }
+	    }
+	    return null;
+	}
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, profile.getStudentId());
-            statement.setString(2, profile.getAddress());
-            statement.setString(3, profile.getPhone());
-            statement.setDate(4, Date.valueOf(profile.getDob()));
+	public void updateProfile(StudentProfile profile) throws SQLException {
+	    String sql = "UPDATE student_profile SET address = ?, phone = ?, dob = ? WHERE student_id = ?";
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setString(1, profile.getAddress());
+	        stmt.setString(2, profile.getPhone());
+	        stmt.setDate(3, new java.sql.Date(profile.getDob().getTime()));
+	        stmt.setInt(4, profile.getStudentID());
+	        stmt.executeUpdate();
+	    }
+	}
 
-            statement.executeUpdate();
-        }
-    }
 
+
+	public void createProfile(StudentProfile profile) throws SQLException {
+		String sql = "INSERT INTO student_profile (student_id, address, phone, dob) VALUES (?, ?, ?, ?)";
+
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setInt(1, profile.getStudentId());
+			statement.setString(2, profile.getAddress());
+			statement.setString(3, profile.getPhone());
+			statement.setDate(4, Date.valueOf(profile.getDob()));
+
+			statement.executeUpdate();
+		}
+	}
 
 }

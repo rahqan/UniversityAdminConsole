@@ -3,68 +3,49 @@ package com.aurionpro.model;
 import java.util.List;
 
 public class Student {
-    private int studentId;
-    private String name;
-    private String rollNumber;  // changed from int to String
-    private int age;
-    private double percentage;
-    private List<Course> courses;
+	private int studentId;
+	private String name;
+	private String rollNumber;
+	
 
-    // Constructor
-    public Student( String name, String rollNumber,   List<Course> courses) {
-    
-        this.name = name;
-        this.rollNumber = rollNumber;
-      
-       
-        this.courses = courses;
-    }
+	// Constructor
+	public Student(String name, String rollNumber) {
 
-    // Getters and Setters
-    public int getStudentId() {
-        return studentId;
-    }
+		this.name = name;
+		this.rollNumber = rollNumber;
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
+		this.courses = courses;
+	}
 
-    public String getName() {
-        return name;
-    }
+	// Getters and Setters
+	public int getStudentId() {
+		return studentId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
 
-    public String getRollNumber() {
-        return rollNumber;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setRollNumber(String rollNumber) {
-        this.rollNumber = rollNumber;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
+	public String getRollNumber() {
+		return rollNumber;
+	}
 
- 
+	public void setRollNumber(String rollNumber) {
+		this.rollNumber = rollNumber;
+	}
 
-    public List<Course> getCourses() {
-        return courses;
-    }
+	@Override
+	public String toString() {
+		return "Student{" + "studentId=" + studentId + ", name='" + name + '\'' + ", rollNumber='" + rollNumber + '\'' +
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-               "studentId=" + studentId +
-               ", name='" + name + '\'' +
-               ", rollNumber='" + rollNumber + '\'' +
-               ", age=" + age +
-             
-               ", courses=" + courses +
-               '}';
-    }
+				'}';
+	}
 }
