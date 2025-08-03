@@ -59,40 +59,48 @@ public class CourseDAO {
 		}
 		return true;
 	}
-	
+
 	public Course getCourseById(int courseId) throws SQLException {
-	    String sql = "SELECT course_id, name FROM course WHERE course_id = ? AND is_active = true";
-	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-	        stmt.setInt(1, courseId);
-	        try (ResultSet rs = stmt.executeQuery()) {
-	            if (rs.next()) {
-	                return new Course(rs.getInt("course_id"), rs.getString("name"));
-	            }
-	        }
-	    }
-	    return null;
+		String sql = "SELECT course_id, name FROM course WHERE course_id = ? AND is_active = true";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, courseId);
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					return new Course(rs.getInt("course_id"), rs.getString("name"));
+				}
+			}
+		}
+		return null;
 	}
-	
+
 	public List<Course> getCoursesByStudentId(int studentId) throws SQLException {
-	    List<Course> courses = new ArrayList<>();
-	    String sql = """
-	        SELECT c.course_id, c.name
-	        FROM course c
-	        JOIN student_course sc ON c.course_id = sc.course_id
-	        WHERE sc.student_id = ? AND c.is_active = true
-	    """;
+		List<Course> courses = new ArrayList<>();
+		String sql = """
+				    SELECT c.course_id, c.name
+				    FROM course c
+				    JOIN student_course sc ON c.course_id = sc.course_id
+				    WHERE sc.student_id = ? AND c.is_active = true
+				""";
 
-	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-	        stmt.setInt(1, studentId);
-	        try (ResultSet rs = stmt.executeQuery()) {
-	            while (rs.next()) {
-	                Course course = new Course(rs.getInt("course_id"), rs.getString("name"));
-	                courses.add(course);
-	            }
-	        }
-	    }
-	    return courses;
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, studentId);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Course course = new Course(rs.getInt("course_id"), rs.getString("name"));
+					courses.add(course);
+				}
+			}
+		}
+		return courses;
 	}
 
+	// stubs
+	public List<Student> getCourseStudents(int courseId) {
+		return new ArrayList<>(); // temporary stub
+	}
+
+	public List<Course> getCoursesByStudentId(int studentId) {
+		return new ArrayList<>(); // temporary stub
+	}
 
 }

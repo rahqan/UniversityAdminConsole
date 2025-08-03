@@ -1,6 +1,6 @@
 package com.aurionpro.UniversityAdmin;
 
-import controller.CourseController;
+import com.aurionpro.controller.CourseController;
 
 public class UniversityAdmin {
 	
