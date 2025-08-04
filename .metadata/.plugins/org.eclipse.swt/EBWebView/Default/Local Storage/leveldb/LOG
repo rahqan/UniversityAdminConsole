@@ -1,2 +1,3 @@
-2025/07/31-18:18:55.928 944 Creating DB D:\Swabhav techlab\assignments\UniversityAdminConsole\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb since it was missing.
-2025/07/31-18:18:55.950 944 Reusing MANIFEST D:\Swabhav techlab\assignments\UniversityAdminConsole\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2025/07/31-18:51:41.740 3ef4 Reusing MANIFEST D:\Swabhav techlab\assignments\UniversityAdminConsole\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2025/07/31-18:51:41.777 3ef4 Recovering log #3
+2025/07/31-18:51:41.780 3ef4 Reusing old log D:\Swabhav techlab\assignments\UniversityAdminConsole\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 

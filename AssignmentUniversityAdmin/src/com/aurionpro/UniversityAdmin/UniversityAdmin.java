@@ -16,7 +16,7 @@ public class UniversityAdmin {
 		
 		System.out.println("final check for github");
 		
-System.out.println("HEllo world!");
+		System.out.println("HEllo world!");
 		
 		System.out.println("Hehehehehehe");
 		
