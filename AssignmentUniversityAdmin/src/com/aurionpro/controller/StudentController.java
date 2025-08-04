@@ -7,7 +7,7 @@ public class StudentController {
 
 		this.scanner = new Scanner(System.in);
 	}
-
+	
 	public void addNewStudent() {
 		
 

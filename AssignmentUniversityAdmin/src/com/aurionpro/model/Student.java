@@ -8,7 +8,7 @@ public class Student {
 	private String rollNumber;
 	
 
-	// Constructor
+
 	public Student(String name, String rollNumber) {
 
 		this.name = name;

@@ -16,7 +16,7 @@ public class StudentService {
 
 	public StudentService() {
 		this.studentDAO = new StudentDAO();
-		// for Viewing Personal Record
+		
 		courseService = new CourseService();
 	}
 

@@ -57,9 +57,6 @@ public class StudentDAO {
 
 		return null;
 	}
-	
-
-
 
 	public void deleteStudent(int id) throws SQLException {
 		String sql = "UPDATE student SET isActive = FALSE WHERE student_id = ?";
