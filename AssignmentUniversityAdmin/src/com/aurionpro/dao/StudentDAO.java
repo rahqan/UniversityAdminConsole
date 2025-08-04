@@ -8,7 +8,6 @@ public class StudentDAO {
 	public StudentDAO() {
 		this.connection = Database.getInstance().getConnection();
 	}
-
 	public void addStudent(Student student) throws SQLException {
 		String sql = "INSERT INTO student (name, roll_number) VALUES (?, ?)";
 		try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -55,7 +54,6 @@ public class StudentDAO {
 						Integer.parseInt(resultSet.getString("roll_number")));
 			}
 		}
-
 		return null;
 	}
 

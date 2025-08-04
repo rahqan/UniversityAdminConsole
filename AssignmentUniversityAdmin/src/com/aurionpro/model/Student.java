@@ -5,8 +5,6 @@ public class Student {
 	private int studentId;
 	private String name;
 	private String rollNumber;
-	
-
 
 	public Student(String name, String rollNumber) {
 
