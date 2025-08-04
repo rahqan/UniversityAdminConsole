@@ -15,7 +15,7 @@ public class StudentController {
 			System.out.print("Enter student name: ");
 			String name = scanner.nextLine().trim();
 			if (name.isEmpty())
-				name = "Unknown"; // default
+				name = "Unknown"; 
 
 			System.out.print("Enter roll number: ");
 			String rollInput = scanner.nextLine().trim();
