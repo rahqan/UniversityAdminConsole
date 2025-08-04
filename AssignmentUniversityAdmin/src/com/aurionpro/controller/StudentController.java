@@ -2,8 +2,7 @@ package com.aurionpro.controller;
 
 public class StudentController {
 
-<<<<<<< HEAD
-=======
+
 	public StudentController() {
 		this.studentService = new StudentService();
 
@@ -174,5 +173,5 @@ public class StudentController {
 		String record = studentService.viewPersonalRecord(studentId);
 		System.out.println(record);
 	}
->>>>>>> rahqan
+
 }
