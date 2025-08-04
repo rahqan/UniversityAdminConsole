@@ -50,9 +50,9 @@ public class StudentController {
                     default -> System.out.println("Invalid choice!");
                 }
             } catch (SQLException e) {
-                System.out.println("❌ Database error: " + e.getMessage());
+                System.out.println(" Database error: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("❌ Error: " + e.getMessage());
+                System.out.println(" Error: " + e.getMessage());
             }
         }
     }
@@ -63,10 +63,10 @@ public class StudentController {
         if (name.isEmpty()) name = "Unknown";
 
         System.out.print("Enter roll number: ");
-        String rollInput = scanner.nextLine().trim();
-        int rollNumber = rollInput.isEmpty() ? 0 : Integer.parseInt(rollInput);
+        String rollNumber = scanner.nextLine().trim(); // Changed to String to match schema
+        if (rollNumber.isEmpty()) rollNumber = "UNKNOWN";
 
-        Student student = new Student(name, rollNumber);
+        Student student = new Student(name, rollNumber); // Now takes String rollNumber
         StudentProfile profile = new StudentProfile();
 
         System.out.print("Enter address: ");
@@ -81,7 +81,7 @@ public class StudentController {
         profile.setDob(Date.valueOf(dob));
 
         studentService.createStudent(student, profile);
-        System.out.println("✅ Student added with ID: " + student.getStudentId());
+        System.out.println(" Student added with ID: " + student.getStudentId());
 
         boolean continueAssigning = true;
         while (continueAssigning) {
@@ -146,7 +146,7 @@ public class StudentController {
 
         StudentProfile updated = new StudentProfile(studentId, address, phone, dob);
         studentService.updateStudentProfile(updated);
-        System.out.println("✅ Profile updated.");
+        System.out.println(" Profile updated.");
     }
 
     private void deleteStudent() throws SQLException {

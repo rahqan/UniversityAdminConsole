@@ -3,7 +3,7 @@ package com.aurionpro.model;
 import java.sql.Date;
 
 public class StudentProfile {
-    private int studentID;
+    private int studentId; 
     private String address;
     private String phone;
     private Date dob;
@@ -11,20 +11,20 @@ public class StudentProfile {
     // Constructors
     public StudentProfile() {}
 
-    public StudentProfile(int studentID, String address, String phone, Date dob) {
-        this.studentID = studentID;
+    public StudentProfile(int studentId, String address, String phone, Date dob) {
+        this.studentId = studentId;
         this.address = address;
         this.phone = phone;
         this.dob = dob;
     }
 
     // Getters and Setters
-    public int getStudentID() {
-        return studentID;
+    public int getStudentId() { 
+        return studentId;
     }
 
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
+    public void setStudentId(int studentId) { 
+        this.studentId = studentId;
     }
 
     public String getAddress() {
@@ -54,7 +54,7 @@ public class StudentProfile {
     @Override
     public String toString() {
         return "StudentProfile {" +
-                "studentID=" + studentID +
+                "studentId=" + studentId + 
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", dob=" + dob +
