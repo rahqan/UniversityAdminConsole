@@ -1,6 +1,6 @@
 package com.aurionpro.database;
 
-<<<<<<< HEAD
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,7 +32,7 @@ public class Database {
         }
         return instance;
     }
-=======
+
 public class Database {
 	private static final Database INSTANCE = new Database();
 

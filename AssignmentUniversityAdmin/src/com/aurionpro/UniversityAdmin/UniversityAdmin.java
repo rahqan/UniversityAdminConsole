@@ -9,40 +9,12 @@ import java.util.Scanner;
 
 public class UniversityAdmin {
 
-<<<<<<< HEAD
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         StudentController studentController = new StudentController();
         CourseController courseController = new CourseController(new CourseService());
         TeacherController teacherController = new TeacherController(); // Assuming it exists
-=======
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		System.out.println("HEllo world!");
-		
-		System.out.println("Hehehehehehe");
-		
-		System.out.println("kuch to push ho yarr");
-		
-		System.out.println("final print");
-		System.out.println("hello again");
-		
-		System.out.println("final check for github");
-		
-		System.out.println("HEllo world!");
-		
-		System.out.println("Hehehehehehe");
-		
-		System.out.println("kuch to push ho yarr");
-		
-		System.out.println("final print");
-		System.out.println("hello again");
-		
-		System.out.println("final check for github");
-		
-	}
->>>>>>> Arjun
+
 
         while (true) {
             System.out.println("\n=== University Admin Menu ===");
