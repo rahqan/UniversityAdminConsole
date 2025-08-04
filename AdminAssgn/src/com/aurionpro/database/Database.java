@@ -23,7 +23,7 @@ public class Database {
     public void connect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/university", "root", "admin#123");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/university", "root", "Rahqan@123");
             System.out.println("Connection to MySQL database has been established successfully.");
         } catch(ClassNotFoundException e) {
             e.printStackTrace();
@@ -33,8 +33,12 @@ public class Database {
     }
 
     public Connection getConnection() {
+        if (connection == null) {
+            connect();
+        }
         return connection;
     }
+
 
     // PostgreSQL Version (Commented out for now)
     /*

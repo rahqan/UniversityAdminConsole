@@ -18,6 +18,7 @@ public class StudentDAO {
 
     public StudentDAO() {
         this.connection = Database.getInstance().getConnection();
+        
     }
 
     public void addStudent(Student student) throws SQLException {
