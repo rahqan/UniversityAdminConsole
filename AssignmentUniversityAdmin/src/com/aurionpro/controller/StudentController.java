@@ -17,7 +17,7 @@ public class StudentController {
 
 		this.scanner = new Scanner(System.in);
 	}
-
+	
 	public void addNewStudent() {
 		
 
@@ -182,4 +182,5 @@ public class StudentController {
 		String record = studentService.viewPersonalRecord(studentId);
 		System.out.println(record);
 	}
+
 }
