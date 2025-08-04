@@ -1,13 +1,19 @@
 package com.aurionpro.service;
 
-import dao.CourseDAO;
-import model.Course;
-
 import java.sql.SQLException;
 import java.util.List;
 
+import com.aurionpro.dao.CourseDAO;
+import com.aurionpro.model.Course;
+import com.aurionpro.model.Student;
+
 public class CourseService {
-	private final CourseDAO courseDAO = new CourseDAO();
+	private final CourseDAO courseDAO;
+	private CourseDAO courseDao;
+
+	public CourseService() throws SQLException {
+		this.courseDAO = new CourseDAO();
+	}
 
 	public void addCourse(String name) throws SQLException {
 		courseDAO.addCourse(new Course(0, name)); // ID auto-generated

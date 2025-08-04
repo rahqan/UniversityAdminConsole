@@ -9,12 +9,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CourseController {
+	
+	
 
     private final CourseService courseService;
     private final Scanner scanner;
 
-    public CourseController() {
-        courseService = new CourseService();
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+		try {
+			courseService = new CourseService();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         scanner = new Scanner(System.in);
     }
 

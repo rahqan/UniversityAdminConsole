@@ -8,7 +8,7 @@ public class Database {
     private static Database instance;
     private Connection connection;
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/University";
+    private static final String URL = "jdbc:postgresql://localhost:5432/university";
     private static final String USER = "postgres";
     private static final String PASSWORD = "root";
 
