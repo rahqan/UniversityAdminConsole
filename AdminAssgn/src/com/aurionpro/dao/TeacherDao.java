@@ -6,7 +6,7 @@ import com.aurionpro.database.Database;
 import com.aurionpro.model.Teacher;
 import com.aurionpro.model.Subject;
 
-public class TeacherDAO {
+public class TeacherDao {
 	private final Database database = Database.getInstance();
 
 	public boolean addTeacher(Teacher teacher) {
