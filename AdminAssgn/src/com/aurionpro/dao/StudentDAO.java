@@ -1,16 +1,11 @@
 package com.aurionpro.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.aurionpro.database.Database;
 import com.aurionpro.model.Student;
 import com.aurionpro.model.StudentProfile;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentDAO {
 
@@ -18,10 +13,21 @@ public class StudentDAO {
 
     public StudentDAO() {
         this.connection = Database.getInstance().getConnection();
-        
     }
 
     public void addStudent(Student student) throws SQLException {
+        // First check if roll number already exists
+        String checkSql = "SELECT student_id FROM student WHERE roll_number = ? AND isActive = TRUE";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+            checkStmt.setString(1, student.getRollNumber());
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    throw new SQLException("Student with roll number '" + student.getRollNumber() + "' already exists");
+                }
+            }
+        }
+        
+        // If not exists, insert new student
         String sql = "INSERT INTO student (name, roll_number) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, student.getName());
@@ -84,6 +90,19 @@ public class StudentDAO {
     }
 
     public void assignCourse(int studentId, int courseId) throws SQLException {
+        // First check if assignment already exists and is active
+        String checkSql = "SELECT student_id FROM student_course WHERE student_id = ? AND course_id = ? AND isActive = TRUE";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, studentId);
+            checkStmt.setInt(2, courseId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    throw new SQLException("Course is already assigned to this student");
+                }
+            }
+        }
+        
+        // If not exists, insert or reactivate assignment
         String sql = "INSERT INTO student_course (student_id, course_id) VALUES (?, ?) "
                 + "ON DUPLICATE KEY UPDATE isActive = TRUE";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -143,8 +162,19 @@ public class StudentDAO {
     }
 
     public void createProfile(StudentProfile profile) throws SQLException {
+        // First check if profile already exists for this student
+        String checkSql = "SELECT student_id FROM student_profile WHERE student_id = ? AND isActive = TRUE";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, profile.getStudentId());
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    throw new SQLException("Profile already exists for student ID: " + profile.getStudentId());
+                }
+            }
+        }
+        
+        // If not exists, create new profile
         String sql = "INSERT INTO student_profile (student_id, address, phone, dob) VALUES (?, ?, ?, ?)";
-
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, profile.getStudentId());
             statement.setString(2, profile.getAddress());

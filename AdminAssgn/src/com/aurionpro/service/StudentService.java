@@ -18,10 +18,19 @@ public class StudentService {
     }
 
     public void createStudent(Student student, StudentProfile profile) throws SQLException {
-        // Here student and profile still don't have studentID in them
-        studentDAO.addStudent(student);
-        profile.setStudentId(student.getStudentId()); // Changed from setStudentID to setStudentId
-        studentDAO.createProfile(profile);
+        try {
+            // Here student and profile still don't have studentID in them
+            studentDAO.addStudent(student);
+            profile.setStudentId(student.getStudentId()); // Changed from setStudentID to setStudentId
+            studentDAO.createProfile(profile);
+        } catch (SQLException e) {
+            if (e.getMessage().contains("already exists")) {
+                System.out.println("❌ " + e.getMessage());
+                throw e; // Re-throw to let controller handle it
+            } else {
+                throw e; // Re-throw other SQL exceptions
+            }
+        }
     }
 
     public StudentProfile getStudentProfile(int studentId) {
@@ -80,7 +89,7 @@ public class StudentService {
         }
     }
 
-    public void displayCourses() {
+    public void displayCourses() throws SQLException {
         List<Course> courses = courseService.getAllCourses();
         System.out.println("Available Courses:");
         for (Course course : courses) {
@@ -97,9 +106,14 @@ public class StudentService {
             }
 
             studentDAO.assignCourse(studentId, courseId);
-            System.out.println("Course assigned successfully.");
+            System.out.println(" Course assigned successfully.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getMessage().contains("already assigned")) {
+                System.out.println(" " + e.getMessage());
+            } else {
+                System.out.println(" Error assigning course: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -114,7 +128,7 @@ public class StudentService {
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append(" Student Record:\n");
+            sb.append("📘 Student Record:\n");
             sb.append("ID: ").append(student.getStudentId()).append("\n");
             sb.append("Name: ").append(student.getName()).append("\n");
             sb.append("Roll Number: ").append(student.getRollNumber()).append("\n");

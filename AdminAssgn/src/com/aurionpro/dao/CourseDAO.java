@@ -67,7 +67,7 @@ public class CourseDAO {
 	}
 
 	public Course getCourseById(int courseId) throws SQLException {
-		String sql = "SELECT course_id, name FROM course WHERE course_id = ? AND is_active = true";
+		String sql = "SELECT course_id, name FROM course WHERE course_id = ? AND isActive = true";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, courseId);
 			try (ResultSet rs = stmt.executeQuery()) {
@@ -85,7 +85,7 @@ public class CourseDAO {
 				    SELECT c.course_id, c.name
 				    FROM course c
 				    JOIN student_course sc ON c.course_id = sc.course_id
-				    WHERE sc.student_id = ? AND c.is_active = true
+				    WHERE sc.student_id = ? AND c.isActive = true
 				""";
 
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
