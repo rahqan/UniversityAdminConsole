@@ -101,7 +101,6 @@ public class StudentService {
 	            return;
 	        }
 		
-		
 //		if (courses.isEmpty()) {
 //			System.out.println("No courses available to assign.");
 //			return;
