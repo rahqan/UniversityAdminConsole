@@ -93,7 +93,7 @@ public class StudentService {
         List<Course> courses = courseService.getAllCourses();
         System.out.println("Available Courses:");
         for (Course course : courses) {
-            System.out.println("Course ID: " + course.getCourseId() + ", Name: " + course.getName());
+            System.out.println("Course ID: " + course.getCourseId() + ", Name: " + course.getName() + " Fee: " + course.getCourseFee());
         }
     }
 
