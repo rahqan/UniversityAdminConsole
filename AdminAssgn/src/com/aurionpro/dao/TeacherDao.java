@@ -10,7 +10,7 @@ public class TeacherDao {
 	private final Database database = Database.getInstance();
 
 	public boolean addTeacher(Teacher teacher) {
-		String query = "INSERT INTO teachers (teacher_name, qualification) VALUES (?, ?)";
+		String query = "INSERT INTO teacher (teacher_name, qualification) VALUES (?, ?)";
 		try (Connection connection = database.getConnection();
 		     PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -32,9 +32,9 @@ public class TeacherDao {
 		}
 	}
 
-	public List<Teacher> getAllTeachers() {
-		List<Teacher> teachers = new ArrayList<>();
-		String query = "SELECT * FROM teachers WHERE isActive=true";
+	public List<Teacher> getAllteacher() {
+		List<Teacher> teacher = new ArrayList<>();
+		String query = "SELECT * FROM teacher WHERE isActive=true";
 
 		try (Connection connection = database.getConnection();
 		     PreparedStatement stmt = connection.prepareStatement(query);
@@ -46,17 +46,17 @@ public class TeacherDao {
 						resultSet.getString("teacher_name"),
 						resultSet.getString("qualification")
 				);
-				teachers.add(teacher);
+				teacher.add(teacher);
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return teachers;
+		return teacher;
 	}
 
 	public Teacher getTeacherById(int id) {
-		String query = "SELECT * FROM teachers WHERE teacher_id = ? AND isActive = true";
+		String query = "SELECT * FROM teacher WHERE teacher_id = ? AND isActive = true";
 		try (Connection connection = database.getConnection();
 		     PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -78,7 +78,7 @@ public class TeacherDao {
 	}
 
 	public Teacher searchTeacher(String keyword) {
-		String query = "SELECT * FROM teachers WHERE teacher_name LIKE ? AND isActive=true";
+		String query = "SELECT * FROM teacher WHERE teacher_name LIKE ? AND isActive=true";
 
 		try (Connection connection = database.getConnection();
 		     PreparedStatement statement = connection.prepareStatement(query)) {
@@ -129,7 +129,7 @@ public class TeacherDao {
 	}
 
 	public boolean deleteTeacher(int teacherId) {
-		String query = "UPDATE teachers SET isActive = false WHERE teacher_id = ?";
+		String query = "UPDATE teacher SET isActive = false WHERE teacher_id = ?";
 		try (Connection connection = database.getConnection();
 		     PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -159,12 +159,12 @@ public class TeacherDao {
 		}
 	}
 
-	public List<Teacher> getTeachersBySubjectId(int subjectId) {
-		List<Teacher> teachers = new ArrayList<>();
+	public List<Teacher> getteacherBySubjectId(int subjectId) {
+		List<Teacher> teacher = new ArrayList<>();
 		String query = """
 			SELECT t.teacher_id, t.teacher_name, t.qualification
 			FROM teacher_subject ts
-			JOIN teachers t ON t.teacher_id = ts.teacher_id
+			JOIN teacher t ON t.teacher_id = ts.teacher_id
 			WHERE ts.subject_id = ? AND ts.isActive = true AND t.isActive = true
 		""";
 
@@ -175,7 +175,7 @@ public class TeacherDao {
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				teachers.add(new Teacher(
+				teacher.add(new Teacher(
 						resultSet.getInt("teacher_id"),
 						resultSet.getString("teacher_name"),
 						resultSet.getString("qualification")
@@ -185,6 +185,6 @@ public class TeacherDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return teachers;
+		return teacher;
 	}
 }
