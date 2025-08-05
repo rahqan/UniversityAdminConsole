@@ -15,6 +15,7 @@ public class UniversityAdmin {
         StudentController studentController = new StudentController();
         CourseController courseController = new CourseController(new CourseService());
         TeacherController teacherController = new TeacherController(); // Assuming it exists
+        FeesController feesController = new FeesController(); // Assuming it exists
 
 
         while (true) {
@@ -22,6 +23,8 @@ public class UniversityAdmin {
             System.out.println("1. Student Management");
             System.out.println("2. Course Management");
             System.out.println("3. Teacher Management");
+             System.out.println("4. Fees Management");
+            
             System.out.println("0. Exit");
             System.out.print("Choose: ");
 
@@ -30,6 +33,7 @@ public class UniversityAdmin {
                 case "1" -> studentController.studentMenu();
                 case "2" -> courseController.courseMenu();
                 case "3" -> teacherController.teacherMenu();
+                case "4" -> feesController.feesMenu();
                 case "0" -> {
                     System.out.println("Exiting...");
                     return;
