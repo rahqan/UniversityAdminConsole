@@ -6,21 +6,25 @@ import java.util.List;
 public class Teacher {
 	private int id;
 	private String name;
-	private String qualification;
 	private List<Subject> subjects = new ArrayList<>();
+	private TeacherProfile profile;
 
-	public Teacher(int id, String name, String qualification, List<Subject> subjects) {
+	public Teacher(int id, String name, List<Subject> subjects) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.qualification = qualification;
 		this.subjects = subjects;
 	}
-	
-	public Teacher(int id, String name, String qualification) {
+
+	public Teacher(int id, String name) {
 		this.id = id;
 		this.name = name;
-		this.qualification = qualification;
+	}
+
+	public Teacher(int id, String name, TeacherProfile profile) {
+		this.id = id;
+		this.name = name;
+		this.profile = profile;
 	}
 
 	public Teacher() {
@@ -43,20 +47,20 @@ public class Teacher {
 		this.name = name;
 	}
 
-	public String getQualification() {
-		return qualification;
-	}
-
-	public void setQualification(String qualification) {
-		this.qualification = qualification;
-	}
-
 	public List<Subject> getSubjects() {
 		return subjects;
 	}
 
 	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
+	}
+
+	public TeacherProfile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(TeacherProfile profile) {
+		this.profile = profile;
 	}
 
 }
