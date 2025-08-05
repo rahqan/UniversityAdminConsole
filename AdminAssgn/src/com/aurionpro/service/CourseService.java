@@ -16,7 +16,7 @@ public class CourseService {
 	}
 
 	public void addCourse(String name) throws SQLException {
-		courseDAO.addCourse(new Course(0, name)); // ID auto-generated
+		courseDAO.addCourse(new Course(0, name)); // ID is auto-generated
 	}
 
 	public List<Course> getAllCourses() throws SQLException {
@@ -42,4 +42,13 @@ public class CourseService {
 	public List<Course> getCoursesByStudentId(int studentId) throws SQLException {
 		return courseDAO.getCoursesByStudentId(studentId);
 	}
+	
+	public void addSubject(String name) throws SQLException {
+		courseDAO.addSubject(name);
+	}
+
+	public void removeSubject(int subjectId) throws SQLException {
+		courseDAO.removeSubject(subjectId);
+	}
+
 }
