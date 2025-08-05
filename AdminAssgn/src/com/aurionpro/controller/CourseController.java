@@ -9,21 +9,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CourseController {
-	
-	
 
     private final CourseService courseService;
     private final Scanner scanner;
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
-		try {
-			courseService = new CourseService();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
 
     public void courseMenu() {
@@ -36,6 +28,8 @@ public class CourseController {
             System.out.println("5. Delete Course if Empty");
             System.out.println("6. Get Course by ID");
             System.out.println("7. Get Courses by Student ID");
+            System.out.println("8. Add Subject");
+            System.out.println("9. Remove Subject");
             System.out.println("0. Back");
             System.out.print("Choose: ");
             int choice = scanner.nextInt();
@@ -50,9 +44,9 @@ public class CourseController {
                     case 5 -> deleteCourseIfEmpty();
                     case 6 -> getCourseById();
                     case 7 -> getCoursesByStudentId();
-                    case 0 -> {
-                        return;
-                    }
+                    case 8 -> addSubject();
+                    case 9 -> removeSubject();
+                    case 0 -> { return; }
                     default -> System.out.println("Invalid choice!");
                 }
             } catch (SQLException e) {
@@ -135,5 +129,20 @@ public class CourseController {
         for (Course c : courses) {
             System.out.println("ID: " + c.getCourseId() + ", Name: " + c.getName());
         }
+    }
+
+    private void addSubject() throws SQLException {
+        System.out.print("Enter subject name: ");
+        String name = scanner.nextLine();
+        courseService.addSubject(name);
+        System.out.println("Subject added successfully.");
+    }
+
+    private void removeSubject() throws SQLException {
+        System.out.print("Enter subject ID to remove: ");
+        int subjectId = scanner.nextInt();
+        scanner.nextLine();
+        courseService.removeSubject(subjectId);
+        System.out.println("Subject removed successfully (soft delete).");
     }
 }
