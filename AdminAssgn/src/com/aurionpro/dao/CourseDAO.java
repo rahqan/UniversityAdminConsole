@@ -21,19 +21,20 @@ public class CourseDAO {
 	}
 
 	public void addCourse(Course course) throws SQLException {
-		String sql = "INSERT INTO course (name) VALUES (?)";
+		String sql = "INSERT INTO course (name, , course_fee) VALUES (?,?)";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setString(1, course.getName());
+			stmt.setDouble(2, course.getCourseFee());
 			stmt.executeUpdate();
 		}
 	}
 
 	public List<Course> getAllCourses() throws SQLException {
 		List<Course> courses = new ArrayList<>();
-		String sql = "SELECT course_id, name FROM course WHERE isActive = TRUE";
+		String sql = "SELECT course_id, name, course_fee FROM course WHERE isActive = TRUE";
 		try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 			while (rs.next()) {
-				courses.add(new Course(rs.getInt("course_id"), rs.getString("name")));
+				courses.add(new Course(rs.getInt("course_id"), rs.getString("name"), rs.getDouble("course_fee")));
 			}
 		}
 		return courses;
@@ -84,12 +85,12 @@ public class CourseDAO {
 	}
 
 	public Course getCourseById(int courseId) throws SQLException {
-		String sql = "SELECT course_id, name FROM course WHERE course_id = ? AND isActive = true";
+		String sql = "SELECT course_id, name, course_fee FROM course WHERE course_id = ? AND isActive = true";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, courseId);
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					return new Course(rs.getInt("course_id"), rs.getString("name"));
+					return new Course(rs.getInt("course_id"), rs.getString("name"), rs.getDouble("course_fee"));
 				}
 			}
 		}
@@ -99,7 +100,7 @@ public class CourseDAO {
 	public List<Course> getCoursesByStudentId(int studentId) throws SQLException {
 		List<Course> courses = new ArrayList<>();
 		String sql = """
-				    SELECT c.course_id, c.name
+				    SELECT c.course_id, c.name,course_fee
 				    FROM course c
 				    JOIN student_course sc ON c.course_id = sc.course_id
 				    WHERE sc.student_id = ? AND c.isActive = true
@@ -109,7 +110,7 @@ public class CourseDAO {
 			stmt.setInt(1, studentId);
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
-					Course course = new Course(rs.getInt("course_id"), rs.getString("name"));
+					Course course = new Course(rs.getInt("course_id"), rs.getString("name"), rs.getDouble("course_fee"));
 					courses.add(course);
 				}
 			}
