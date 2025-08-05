@@ -1,10 +1,14 @@
 package com.aurionpro.service;
 
-import com.aurionpro.dao.FeesDAO;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import com.aurionpro.dao.FeesDAO;
+import com.aurionpro.database.Database;
 
 public class FeesService {
     
@@ -63,8 +67,20 @@ public class FeesService {
     }
 
     public void modifyCourseFee(int courseId, BigDecimal newFee) throws SQLException {
-        // Business Logic: Just delegate to CourseService
-        //courseService.modifyCourseFee(courseId, newFee);
+        if (newFee == null || newFee.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Fee amount must be greater than zero");
+        }
+        
+        String sql = "UPDATE course SET course_fee = ? WHERE course_id = ? AND isActive = TRUE";
+        Connection connection = Database.getInstance().getConnection();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBigDecimal(1, newFee);
+            stmt.setInt(2, courseId);
+            int rows = stmt.executeUpdate();
+            if (rows == 0) {
+                throw new RuntimeException("Course not found");
+            }
+        }
     }
 
     public List<Map<String, Object>> getRemainingFeesForAll() throws SQLException {
