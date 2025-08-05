@@ -15,8 +15,8 @@ public class CourseService {
 		this.courseDAO = new CourseDAO();
 	}
 
-	public void addCourse(String name) throws SQLException {
-		courseDAO.addCourse(new Course(0, name)); // ID is auto-generated
+	public void addCourse(String name, double fee) throws SQLException {
+		courseDAO.addCourse(new Course(0, name, fee)); // ID is auto-generated
 	}
 
 	public List<Course> getAllCourses() throws SQLException {
