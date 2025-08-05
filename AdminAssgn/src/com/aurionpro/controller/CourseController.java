@@ -58,7 +58,10 @@ public class CourseController {
     private void addCourse() throws SQLException {
         System.out.print("Enter course name: ");
         String name = scanner.nextLine();
-        courseService.addCourse(name);
+        System.out.println("Enter fees for this course: ");
+        Double fee = scanner.nextDouble();
+        scanner.nextLine();
+        courseService.addCourse(name, fee);
         System.out.println("Course added successfully.");
     }
 
