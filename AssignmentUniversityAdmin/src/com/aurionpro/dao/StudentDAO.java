@@ -1,12 +1,29 @@
 package com.aurionpro.dao;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.aurionpro.database.Database;
+import com.aurionpro.model.Student;
+
 public class StudentDAO {
 
 
 	private final Connection connection;
 
 	public StudentDAO() {
-		this.connection = Database.getInstance().getConnection();
+		try {
+			this.connection = Database.getInstance().getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void addStudent(Student student) throws SQLException {
 		String sql = "INSERT INTO student (name, roll_number) VALUES (?, ?)";
