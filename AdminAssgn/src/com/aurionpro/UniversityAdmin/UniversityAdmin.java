@@ -1,6 +1,7 @@
 package com.aurionpro.UniversityAdmin;
 
 import com.aurionpro.controller.CourseController;
+import com.aurionpro.controller.FeesController;
 import com.aurionpro.controller.StudentController;
 import com.aurionpro.controller.TeacherController;
 import com.aurionpro.service.CourseService;
