@@ -3,6 +3,8 @@ package com.aurionpro.dao;
 import com.aurionpro.database.Database;
 import com.aurionpro.model.Student;
 import com.aurionpro.model.StudentProfile;
+
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,9 @@ public class StudentDAO {
                 }
             }
         }
+        
+     // Lock current course fee
+        String feeSql = "INSERT INTO student_course_fees (student_id, course_id, fee_locked_amount, total_paid_amount, is_fully_paid) VALUES (?, ?, 50000.00, 0.00, FALSE)";
     }
 
     public List<Student> getAllStudents() throws SQLException {
@@ -102,13 +107,37 @@ public class StudentDAO {
             }
         }
         
-        // If not exists, insert or reactivate assignment
+        // Get current course fee from database
+        BigDecimal courseFee = null;
+        String getFeeSql = "SELECT course_fee FROM course WHERE course_id = ? AND isActive = TRUE";
+        try (PreparedStatement feeQuery = connection.prepareStatement(getFeeSql)) {
+            feeQuery.setInt(1, courseId);
+            try (ResultSet feeRs = feeQuery.executeQuery()) {
+                if (feeRs.next()) {
+                    courseFee = feeRs.getBigDecimal("course_fee");
+                } else {
+                    throw new SQLException("Course not found or inactive");
+                }
+            }
+        }
+        
+        // Insert course assignment
         String sql = "INSERT INTO student_course (student_id, course_id) VALUES (?, ?) "
                 + "ON DUPLICATE KEY UPDATE isActive = TRUE";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, studentId);
             statement.setInt(2, courseId);
             statement.executeUpdate();
+        }
+        
+        // Lock fee at current course fee
+        String feeSql = "INSERT INTO student_course_fees (student_id, course_id, fee_locked_amount, total_paid_amount, is_fully_paid) " +
+                       "VALUES (?, ?, ?, 0.00, FALSE)";
+        try (PreparedStatement feeStmt = connection.prepareStatement(feeSql)) {
+            feeStmt.setInt(1, studentId);
+            feeStmt.setInt(2, courseId);
+            feeStmt.setBigDecimal(3, courseFee);
+            feeStmt.executeUpdate();
         }
     }
 
