@@ -47,6 +47,23 @@ public class CourseDAO {
 			stmt.executeUpdate();
 		}
 	}
+	
+	public void addSubject(String name) throws SQLException {
+		String sql = "INSERT INTO subject (name) VALUES (?)";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, name);
+			stmt.executeUpdate();
+		}
+	}
+	
+	public void removeSubject(int subjectId) throws SQLException {
+		String sql = "UPDATE subject SET isActive = FALSE WHERE subject_id = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, subjectId);
+			stmt.executeUpdate();
+		}
+	}
+
 
 	public boolean softDeleteCourse(int courseId) throws SQLException {
 		String checkSql = "SELECT COUNT(*) FROM student_course WHERE course_id = ? AND isActive = TRUE";
