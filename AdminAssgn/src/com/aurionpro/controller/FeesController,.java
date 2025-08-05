@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
+ 
 import com.aurionpro.service.FeesService;
 
 public class FeesController {
@@ -45,7 +45,10 @@ public class FeesController {
 	}
 
 	private void payFeesMenu() {
+		System.out.println("Fees left: ");
+		viewRemainingFeesAll();
 		System.out.println("\n=== Pay Fees ===");
+		
 
 		try {
 			System.out.print("Enter Student ID: ");
